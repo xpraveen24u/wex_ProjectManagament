@@ -1,0 +1,38 @@
+<template>
+    <lightning-card title="Create New Project">
+        <div class="slds-p-around_medium">
+            <!-- Project Details Form -->
+            <lightning-input label="Project Name" value={projectName} onchange={handleProjectNameChange}></lightning-input>
+            <lightning-button variant="brand" label="Create Project" onclick={handleCreateProject}></lightning-button>
+
+            <!-- Milestones and To-Do Items Section -->
+            <template if:true={projectId}>
+                <hr />
+                <lightning-input label="Milestone Name" value={milestoneName} onchange={handleMilestoneNameChange}></lightning-input>
+                <lightning-input label="Milestone Due Date" type="date" value={milestoneDueDate} onchange={handleMilestoneDueDateChange}></lightning-input>
+                <lightning-button variant="brand" label="Add Milestone" onclick={handleAddMilestone}></lightning-button>
+
+                <template if:true={milestoneId}>
+                <lightning-input label="To-Do Item" onchange={handleToDoItemChange} data-id={milestoneId}></lightning-input>
+                <lightning-combobox label="Status" value={todoStatus} options={todoStatusOptions} onchange={handleToDoItemStatus} data-field="todoStatus"></lightning-combobox>
+                <lightning-input label="To do Due Date" type="date" value={todoitemDueDate} onchange={handleToDoItemDueDateChange}></lightning-input>
+                <lightning-button label="Add To-Do" onclick={handleAddToDo}></lightning-button>
+                </template>
+
+                <div class="slds-m-top_large">
+                    <h3 class="slds-text-heading_medium">Project Overview</h3>
+                    <template for:each={milestones} for:item="milestone">
+                        <div key={milestone.Id} class="slds-box slds-m-top_small">
+                            <strong>{milestone.Name}</strong> (Due: {milestone.Due_Date__c})
+                            <ul>
+                                <template for:each={milestone.todos} for:item="todo">
+                                    <li key={todo.Id}>{todo.Name} - {todo.Status__c}</li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
