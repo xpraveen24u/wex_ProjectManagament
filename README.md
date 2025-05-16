@@ -10,8 +10,10 @@ You'll need to create custom objects in Salesforce to store the necessary inform
 
   * `Project Name` (Text)
   * `Owner` (Lookup to User)
-  * `Status` (Picklist: Not Started, In Progress, Complete)
-  * `% Complete` (Percent)
+  * `Project_Status__c` (Formula)
+  * `Project_Complete__c` (Formula)
+  * `Sum_of_Milestone_Complete__c` (Roll-Up Summary (SUM Milestone))
+  * `Total_No_of_Milestones__c` (Roll-Up Summary (COUNT Milestone))
 * **Relationships**:
 
   * `Project` has a one-to-many relationship with Milestones (each project can have multiple milestones).
@@ -21,10 +23,11 @@ You'll need to create custom objects in Salesforce to store the necessary inform
 * **Fields**:
 
   * `Milestone Name` (Text)
-  * `% Complete` (Percent)
-  * `Status` (Picklist: Not Started, In Progress, Complete)
+  * `Milestone_Complete__c` (Formula)
+  * `Milestone_Status__c` (Formula)
   * `Due Date` (Date)
-  * `Project` (Lookup to Project)
+  * `Project` (Master-Detail(Project))
+  * `Count_of_Competed_To_Do__c` (Roll-Up Summary (COUNT To Do Item))
 * **Relationships**:
 
   * `Milestone` has a one-to-many relationship with To-Do items (each milestone can have multiple to-do items).
@@ -36,7 +39,7 @@ You'll need to create custom objects in Salesforce to store the necessary inform
   * `To-Do Name` (Text)
   * `Status` (Picklist: Not Started, In Progress, Complete)
   * `Due Date` (Date)
-  * `Milestone` (Lookup to Milestone)
+  * `Milestone` (Master-Detail(Milestone))
 * **Relationships**:
 
   * Each To-Do item is related to a specific Milestone.
@@ -45,19 +48,19 @@ You'll need to create custom objects in Salesforce to store the necessary inform
 
 #### a. **Calculating Project % Complete**:
 
-You can create a **formula field** or a **trigger** that automatically updates the **Project % Complete** based on the Milestones associated with it. The calculation should be:
+we have created a **formula field**  that automatically updates the **Project % Complete** based on the Milestones associated with it. The calculation should be:
 
 * `Project % Complete = (Sum of Milestone % Complete) / Total Number of Milestones`
 
 #### b. **Calculating Milestone % Complete**:
 
-Similarly, create a **formula field** or **trigger** that calculates the **Milestone % Complete** based on the number of To-Dos that are completed versus the total number of To-Dos for that milestone:
+Similarly, created a **formula field** that calculates the **Milestone % Complete** based on the number of To-Dos that are completed versus the total number of To-Dos for that milestone:
 
 * `Milestone % Complete = (Number of Completed To-Dos / Total Number of To-Dos) * 100`
 
 #### c. **Status Calculations**:
 
-You can use **formula fields** or **process builder/flows** to automatically update the status fields based on the percentage values.
+We have created **formula fields** here to automatically update the status fields based on the percentage values.
 
 * **Project Status**:
 
@@ -67,4 +70,7 @@ You can use **formula fields** or **process builder/flows** to automatically upd
 
   * `IF(% Complete = 0, "Not Started", IF(% Complete = 100, "Complete", "In Progress"))`
 
-**Note**: Since the project and milestone status fields are to be automatically calculated, you’ll need to set them as **read-only** to prevent manual changes. Use a **validation rule** to ensure that the status cannot be manually altered by users.# wex_ProjectManagament
+
+### 3. **LWC component i.e Project Management**:
+       We have created a LWC components on the basis of the requirements.
+
